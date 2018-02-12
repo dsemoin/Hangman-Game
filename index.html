@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Hangman Game</title>
+   
+  </head>
+
+  <body>
+
+    <div id="game">
+      <p>Press any key to get started!</p>
+    </div>
+    <div>
+       <div id="wins">Wins</div><br>
+       <div id="losses">Losses</div><br>
+       <div id="guessesRemain">Remaining Guesses</div><br>
+       <div id="guessesMade">Guesses made</div> <br>
+       <div id="letterList">
+          
+       </div>
+       <div id="gameBoard"></div>
+    
+    </div>
+
+
+<script>
+ //This is to make underscores for missing letters
+    var makeSpaces = function(word){
+    var blank = "";
+    for (var i = 0; i < word.length; i++){
+    if (correctLetters.includes(word[i]))
+    { blank = blank + word[i]
+      
+    } else {   
+    blank = blank + ' _ ';
+    } 
+}
+    document.getElementById("gameBoard").innerHTML = blank;
+    return blank;
+    
+   }
+    
+    var elements = ['radon', 'xenon', 'hydrogen', 'oxygen', 'nitrogen', 'bromine', 'fluorine', 'chlorine', 'lithium', 'sodium'];
+    var letter = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+    var correctLetters, incorrectLetters, lettersGuessed, word;
+    var wins= 0; var losses = 0;   
+    function resetGame() {
+    correctLetters = [];
+    incorrectLetters = 0;
+    lettersGuessed = [];
+    lettersRemain = 0;
+    word = elements[Math.floor(Math.random() * elements.length)].split('');
+    var blank= makeSpaces(word);
+    console.log(word);
+    document.getElementById("wins").innerHTML = "Wins " + wins;
+    document.getElementById("losses").innerHTML = "Losses " + losses;
+    document.getElementById("guessesMade").innerHTML = "Guesses Made " + lettersGuessed.join("");
+    }
+    resetGame();
+    
+
+    
+    
+    document.getElementById("letterList").innerHTML = letter.join('');
+// This function is run whenever the user presses a key.
+    document.onkeyup = function(event){
+   // Determines which key was pressed.
+    var userGuess = event.key;
+    console.log(event.key);
+
+    //this determines letters guessed vs letters remaining
+    
+    lettersRemain--;
+
+    if (word.includes(userGuess)){
+       correctLetters.push(userGuess);
+        alert ("choose another letter");
+        makeSpaces(word);
+        
+    } else  {
+        lettersGuessed.push(userGuess);
+        document.getElementById("guessesMade").innerHTML = "Guesses Made " + lettersGuessed.join("");
+        incorrectLetters++;
+        alert ("Nope!");
+        
+    } 
+    if(incorrectLetters > 5){
+        alert("Game Over!"); 
+        losses++;
+        resetGame();
+    }
+   //join is used to connect all the letters to make a word. 
+   if(word.join("") === makeSpaces(word)){
+       alert("You Won!");
+       wins++;
+       resetGame();
+
+   } 
+
+   
+}
+
+    </script>
+    
+</body>
+</html>
